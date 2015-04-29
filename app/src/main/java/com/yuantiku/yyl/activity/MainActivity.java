@@ -3,6 +3,7 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 
 import com.yuantiku.yyl.R;
+import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.observe.Observable;
 import com.yuantiku.yyl.observe.Observer;
 import com.yuantiku.yyl.pages.BasePage;
@@ -21,6 +22,7 @@ public class MainActivity extends BaseActivity implements Observer {
         BasePage loginPage = new LoginPage();
         loginPage.addObserver(this);
         pageManager.push(loginPage);
+        LoginHelper.helper.login("lirui", "");
     }
 
     @Override

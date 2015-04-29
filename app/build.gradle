@@ -19,6 +19,13 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
+            res.srcDirs = ['src/main/res']
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -28,12 +35,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.alibaba:fastjson:1.2.5'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.j256.ormlite:ormlite-android:4.45'
+    compile 'org.jsoup:jsoup:1.6.1'
+    compile('de.greenrobot:greendao:1.3.7')
 }

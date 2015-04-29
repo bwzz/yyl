@@ -1,18 +1,18 @@
 package com.yuantiku.yyl.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+
+import butterknife.ButterKnife;
 
 import com.yuantiku.yyl.observe.Observable;
 import com.yuantiku.yyl.observe.Observer;
-
-import butterknife.ButterKnife;
 
 /**
  * @author lirui
  * @date 15/4/13.
  */
-public abstract class BaseActivity extends ActionBarActivity implements Observer {
+public abstract class BaseActivity extends AppCompatActivity implements Observer {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
