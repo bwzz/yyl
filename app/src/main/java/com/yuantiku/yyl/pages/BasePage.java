@@ -44,6 +44,7 @@ public class BasePage extends Fragment implements MyObserver {
         } else {
             View view = inflater.inflate(getLayoutId(), container, false);
             ButterKnife.inject(this, view);
+            view.setClickable(true);
             setupView(view);
             return view;
         }

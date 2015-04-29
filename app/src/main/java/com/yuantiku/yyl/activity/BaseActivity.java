@@ -3,10 +3,10 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
-
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
+
+import butterknife.ButterKnife;
 
 /**
  * @author lirui

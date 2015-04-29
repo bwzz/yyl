@@ -12,8 +12,9 @@ public class MyDaoGenerator {
         new DaoGenerator().generateAll(schema, args[0]);
     }
 
-    private static void addAccount(Schema schema){
+    private static void addAccount(Schema schema) {
         Entity account = schema.addEntity("Account");
+        account.implementsSerializable();
         account.addIdProperty();
         account.addStringProperty("name").notNull();
         account.addStringProperty("ldap").notNull();

@@ -4,7 +4,7 @@ package com.yuantiku.dbdata;
 /**
  * Entity mapped to table ACCOUNT.
  */
-public class Account {
+public class Account implements java.io.Serializable {
 
     private Long id;
     /** Not-null value. */

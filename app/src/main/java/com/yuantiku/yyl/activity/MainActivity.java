@@ -3,7 +3,6 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 
 import com.yuantiku.yyl.R;
-import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
 import com.yuantiku.yyl.pages.BasePage;

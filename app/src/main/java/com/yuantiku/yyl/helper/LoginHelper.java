@@ -48,7 +48,6 @@ public enum LoginHelper {
         try {
             document = Jsoup.parse(response.getBody().in(), "UTF-8",
                     "https://wiki.zhenguanyu.com/");
-
         } catch (IOException e) {
             e.printStackTrace();
             return;
