@@ -5,15 +5,17 @@ import com.yuantiku.yyl.interfaces.WikiService;
 import com.yuantiku.yyl.webadapter.WikiAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * @author lirui
@@ -23,9 +25,12 @@ public enum LoginHelper {
     helper;
 
     private WikiService service;
+    private List<Account> accountList;
+    private Action1<Account> onNextAction;
 
     LoginHelper() {
         service = WikiAdapter.getService();
+        accountList = new ArrayList<>();
     }
 
     public void login(String name, String password) {
@@ -38,19 +43,25 @@ public enum LoginHelper {
                 .subscribe(this::parseResponse, error -> L.e(error.getMessage()));
     }
 
-    private void parseResponse(Response response){
+    private void parseResponse(Response response) {
+        Document document;
         try {
-            Document document = Jsoup.parse(response.getBody().in(), "UTF-8",
+            document = Jsoup.parse(response.getBody().in(), "UTF-8",
                     "https://wiki.zhenguanyu.com/");
-            Elements items = document.getElementsByTag("tr");
-            for (Element item : items) {
-                Elements attrs = item.getElementsByTag("td");
-                String[] res = attrs.text().split(" ");
-                saveAccount(res);
-            }
+
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
+        Elements items = document.getElementsByTag("tr");
+        for (Element item : items) {
+            Elements attrs = item.getElementsByTag("td");
+            String[] res = attrs.text().split(" ");
+            saveAccount(res);
+        }
+        Observable.from(accountList)
+                .subscribe(onNextAction);
+        AccountDBHelper.helper.save(accountList);
     }
 
     private void saveAccount(String[] infos) {
@@ -66,7 +77,10 @@ public enum LoginHelper {
         account.setGoogleAccount(infos[5]);
         account.setBirth(infos[6]);
         account.setConstellation(infos[7]);
-        L.i(account.getName());
-        AccountDBHelper.helper.save(account);
+        accountList.add(account);
+    }
+
+    public void setOnNextAction(Action1<Account> onNextAction) {
+        this.onNextAction = onNextAction;
     }
 }
