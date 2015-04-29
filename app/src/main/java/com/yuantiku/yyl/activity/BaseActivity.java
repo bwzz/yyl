@@ -1,10 +1,10 @@
 package com.yuantiku.yyl.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 
-import com.yuantiku.yyl.util.LogUtils;
+import com.yuantiku.yyl.observe.Observable;
+import com.yuantiku.yyl.observe.Observer;
 
 import butterknife.ButterKnife;
 
@@ -12,9 +12,8 @@ import butterknife.ButterKnife;
  * @author lirui
  * @date 15/4/13.
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends ActionBarActivity implements Observer {
 
-    public static LogUtils L;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,5 +21,12 @@ public abstract class BaseActivity extends ActionBarActivity {
         ButterKnife.inject(this);
     }
 
-    protected abstract int getLayoutResId();
+    protected int getLayoutResId() {
+        return 0;
+    }
+
+    @Override
+    public final void update(java.util.Observable observable, Object data) {
+        update((Observable) observable, data);
+    }
 }
