@@ -4,14 +4,14 @@ import android.os.Bundle;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.LoginHelper;
-import com.yuantiku.yyl.observe.Observable;
-import com.yuantiku.yyl.observe.Observer;
+import com.yuantiku.yyl.observe.MyObservable;
+import com.yuantiku.yyl.observe.MyObserver;
 import com.yuantiku.yyl.pages.BasePage;
 import com.yuantiku.yyl.pages.ContactsPage;
 import com.yuantiku.yyl.pages.LoginPage;
 import com.yuantiku.yyl.pages.PageManager;
 
-public class MainActivity extends BaseActivity implements Observer {
+public class MainActivity extends BaseActivity implements MyObserver {
 
     private PageManager pageManager;
 
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object data) {
+    public void update(MyObservable myObservable, Object data) {
         pageManager.push(new ContactsPage(), null, false);
     }
 

@@ -5,14 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 
-import com.yuantiku.yyl.observe.Observable;
-import com.yuantiku.yyl.observe.Observer;
+import com.yuantiku.yyl.observe.MyObservable;
+import com.yuantiku.yyl.observe.MyObserver;
 
 /**
  * @author lirui
  * @date 15/4/13.
  */
-public abstract class BaseActivity extends AppCompatActivity implements Observer {
+public abstract class BaseActivity extends AppCompatActivity implements MyObserver {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Observer
 
     @Override
     public final void update(java.util.Observable observable, Object data) {
-        update((Observable) observable, data);
+        update((MyObservable) observable, data);
     }
 }

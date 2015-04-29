@@ -44,14 +44,14 @@ public class LoginPage extends BasePage {
             public void success(String s, Response response) {
                 LogUtils.i(response.getUrl());
                 pageManager.pop(LoginPage.this);
-                observable.notifyObservers(response);
+                myObservable.notifyObservers(response);
             }
 
             @Override
             public void failure(RetrofitError error) {
                 LogUtils.e(error.toString());
                 pageManager.pop(LoginPage.this);
-                observable.notifyObservers(error);
+                myObservable.notifyObservers(error);
             }
         });
     }

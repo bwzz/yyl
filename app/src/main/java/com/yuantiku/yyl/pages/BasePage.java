@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yuantiku.yyl.observe.Observable;
-import com.yuantiku.yyl.observe.Observer;
+import com.yuantiku.yyl.observe.MyObservable;
+import com.yuantiku.yyl.observe.MyObserver;
 
 import butterknife.ButterKnife;
 
@@ -16,12 +16,12 @@ import butterknife.ButterKnife;
  * @author wanghb
  * @date 15/4/25.
  */
-public class BasePage extends Fragment implements Observer {
+public class BasePage extends Fragment implements MyObserver {
 
-    protected Observable observable = new Observable();
+    protected MyObservable myObservable = new MyObservable();
 
-    public void addObserver(Observer observer) {
-        observable.addObserver(observer);
+    public void addObserver(MyObserver myObserver) {
+        myObservable.addObserver(myObserver);
     }
 
     protected PageManager pageManager;
@@ -32,7 +32,7 @@ public class BasePage extends Fragment implements Observer {
 
     @Override
     public void onDestroy() {
-        observable.deleteObservers();
+        myObservable.deleteObservers();
         super.onDestroy();
     }
 
@@ -62,13 +62,13 @@ public class BasePage extends Fragment implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object data) {
+    public void update(MyObservable myObservable, Object data) {
 
     }
 
     @Deprecated
     @Override
     public final void update(java.util.Observable observable, Object data) {
-        update((Observable) observable, data);
+        update((MyObservable) observable, data);
     }
 }

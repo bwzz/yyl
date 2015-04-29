@@ -1,13 +1,10 @@
 package com.yuantiku.yyl.interfaces;
 
-import com.squareup.okhttp.Call;
-
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.mime.TypedByteArray;
 
 /**
  * @author lirui
@@ -17,10 +14,9 @@ public interface WikiService {
 
     @FormUrlEncoded
     @POST("/FrontPage?action=login")
-    public void login(@Field("name") String username, @Field("password") String password,
+    void login(@Field("name") String username, @Field("password") String password,
             @Field("login") String login, Callback<Object> res);
 
-
     @GET("/TeamMembers")
-    public void getMembers(Callback<Object> res);
+    void getMembers(Callback<Object> res);
 }
