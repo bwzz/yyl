@@ -29,45 +29,28 @@ public enum LoginHelper {
     }
 
     public void login(String name, String password) {
-        service.login(name, password, "Login", new Callback<Object>() {
-
-            @Override
-            public void success(Object o, Response response) {
-                L.i(response.toString());
-                loadMembers();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
+        service.login(name, password, "Login")
+                .subscribe(success -> loadMembers(), failure -> L.e(failure.getMessage()));
     }
 
     private void loadMembers() {
-        service.getMembers(new Callback<Object>() {
-            @Override
-            public void success(Object o, Response response) {
+        service.getMembers()
+                .subscribe(this::parseResponse, error -> L.e(error.getMessage()));
+    }
 
-                try {
-                    Document document = Jsoup.parse(response.getBody().in(), "UTF-8",
-                            "https://wiki.zhenguanyu.com/");
-                    Elements items = document.getElementsByTag("tr");
-                    for (Element item : items) {
-                        Elements attrs = item.getElementsByTag("td");
-                        String[] res = attrs.text().split(" ");
-                        saveAccount(res);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private void parseResponse(Response response){
+        try {
+            Document document = Jsoup.parse(response.getBody().in(), "UTF-8",
+                    "https://wiki.zhenguanyu.com/");
+            Elements items = document.getElementsByTag("tr");
+            for (Element item : items) {
+                Elements attrs = item.getElementsByTag("td");
+                String[] res = attrs.text().split(" ");
+                saveAccount(res);
             }
-
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void saveAccount(String[] infos) {
@@ -83,6 +66,7 @@ public enum LoginHelper {
         account.setGoogleAccount(infos[5]);
         account.setBirth(infos[6]);
         account.setConstellation(infos[7]);
+        L.i(account.getName());
         AccountDBHelper.helper.save(account);
     }
 }

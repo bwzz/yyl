@@ -1,10 +1,12 @@
 package com.yuantiku.yyl.interfaces;
 
-import retrofit.Callback;
+
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import rx.Observable;
 
 /**
  * @author lirui
@@ -14,9 +16,9 @@ public interface WikiService {
 
     @FormUrlEncoded
     @POST("/FrontPage?action=login")
-    void login(@Field("name") String username, @Field("password") String password,
-            @Field("login") String login, Callback<Object> res);
+    Observable<Response> login(@Field("name") String username, @Field("password") String password,
+            @Field("login") String login);
 
     @GET("/TeamMembers")
-    void getMembers(Callback<Object> res);
+    Observable<Response> getMembers();
 }

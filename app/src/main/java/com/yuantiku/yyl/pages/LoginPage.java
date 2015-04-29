@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yuantiku.yyl.R;
+import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.util.LogUtils;
 import com.yuantiku.yyl.webadapter.WikiAdapter;
 
@@ -39,21 +40,7 @@ public class LoginPage extends BasePage {
     public void login(View view) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
-        WikiAdapter.getService().login(un, pw, "L", new Callback<String>() {
-            @Override
-            public void success(String s, Response response) {
-                LogUtils.i(response.getUrl());
-                pageManager.pop(LoginPage.this);
-                myObservable.notifyObservers(response);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                LogUtils.e(error.toString());
-                pageManager.pop(LoginPage.this);
-                myObservable.notifyObservers(error);
-            }
-        });
+        LoginHelper.helper.login(un, pw);
     }
 
     @Override

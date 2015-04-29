@@ -22,7 +22,6 @@ public class MainActivity extends BaseActivity implements MyObserver {
         BasePage loginPage = new LoginPage();
         loginPage.addObserver(this);
         pageManager.push(loginPage);
-        LoginHelper.helper.login("lirui", "");
     }
 
     @Override
