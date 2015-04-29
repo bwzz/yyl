@@ -17,6 +17,4 @@ public interface WikiService {
     void login(@Field("name") String username, @Field("password") String password,
             @Field("login") String login, Callback<String> res);
 
-    @GET("/Livecast")
-    void test(Callback<String> res);
 }
