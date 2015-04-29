@@ -36,17 +36,5 @@ public class MainActivity extends BaseActivity {
                 L.e(error.getMessage());
             }
         });
-
-        wikiService.test(new Callback<String>() {
-            @Override
-            public void success(String s, Response response) {
-                L.i(response.toString());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                L.e(error.getMessage());
-            }
-        });
     }
 }
