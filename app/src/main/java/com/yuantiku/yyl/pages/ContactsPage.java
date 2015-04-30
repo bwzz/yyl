@@ -15,6 +15,7 @@ import com.yuantiku.yyl.adapter.ContactAdapter;
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.ZGYWikiHelper;
 import com.yuantiku.yyl.interfaces.OnItemClickListener;
+import com.yuantiku.yyl.observe.MyObservable;
 
 import java.util.List;
 
@@ -70,7 +71,6 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
     }
 
     private void refreshData() {
-        progress.setVisibility(View.VISIBLE);
         ZGYWikiHelper.helper.loadMembers(this::updateData, this::handleException);
     }
 
@@ -85,6 +85,12 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
             L.e(e.getMessage());
         }
 
+    }
+
+    @Override
+    public void update(MyObservable myObservable, Object data) {
+        super.update(myObservable, data);
+        refreshData();
     }
 
     private void updateData(List<Account> accounts) {

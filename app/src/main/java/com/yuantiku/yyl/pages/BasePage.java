@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
-
-import butterknife.ButterKnife;
 
 /**
  * @author wanghb

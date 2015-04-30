@@ -17,7 +17,7 @@ public class WikiAdapter {
     public static WikiService getService() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("https://wiki.zhenguanyu.com")
-                .setLogLevel(LogLevel.FULL)
+                .setLogLevel(LogLevel.BASIC)
                 .setClient(new OkClient(MySSLTrust.trustcert(MyApplication.getInstance())))
                 .setConverter(new MyGsonConvertor(new Gson()))
                 .build();

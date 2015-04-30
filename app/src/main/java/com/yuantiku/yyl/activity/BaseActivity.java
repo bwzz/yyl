@@ -3,16 +3,16 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import butterknife.ButterKnife;
+
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
-
-import butterknife.ButterKnife;
 
 /**
  * @author lirui
  * @date 15/4/13.
  */
-public abstract class BaseActivity extends AppCompatActivity implements MyObserver {
+public class BaseActivity extends AppCompatActivity implements MyObserver {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MyObserv
     @Override
     public final void update(java.util.Observable observable, Object data) {
         update((MyObservable) observable, data);
+    }
+
+    @Override
+    public void update(MyObservable myObservable, Object data) {
+
     }
 }

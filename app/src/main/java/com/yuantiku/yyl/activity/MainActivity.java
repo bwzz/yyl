@@ -3,14 +3,10 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 
 import com.yuantiku.yyl.R;
-import com.yuantiku.yyl.observe.MyObservable;
-import com.yuantiku.yyl.observe.MyObserver;
-import com.yuantiku.yyl.pages.BasePage;
 import com.yuantiku.yyl.pages.ContactsPage;
-import com.yuantiku.yyl.pages.LoginPage;
 import com.yuantiku.yyl.pages.PageManager;
 
-public class MainActivity extends BaseActivity implements MyObserver {
+public class MainActivity extends BaseActivity {
 
     private PageManager pageManager;
 
@@ -18,7 +14,7 @@ public class MainActivity extends BaseActivity implements MyObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageManager = new PageManager(getSupportFragmentManager(), R.id.container);
-        update(null, null);
+        pageManager.push(new ContactsPage(), null, false);
     }
 
     @Override
@@ -32,10 +28,4 @@ public class MainActivity extends BaseActivity implements MyObserver {
             super.onBackPressed();
         }
     }
-
-    @Override
-    public void update(MyObservable myObservable, Object data) {
-        pageManager.push(new ContactsPage(), null, false);
-    }
-
 }
