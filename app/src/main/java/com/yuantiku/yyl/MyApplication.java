@@ -2,6 +2,7 @@ package com.yuantiku.yyl;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.yuantiku.yyl.util.CrashHandler;
 import com.yuantiku.yyl.util.PersistentCookieStore;
 
@@ -24,6 +25,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         application = this;
+        Fresco.initialize(this);
         CrashHandler.getInstance().init(this);
         CookieManager cookieManager = new CookieManager(PersistentCookieStore.getInstance(this),
                 CookiePolicy.ACCEPT_ALL);
