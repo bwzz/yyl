@@ -5,8 +5,8 @@ import android.widget.TextView;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
+import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.util.LogUtils;
-import com.yuantiku.yyl.webadapter.WikiAdapter;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -37,8 +37,7 @@ public class LoginPage extends BasePage {
     public void login(View view) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
-        WikiAdapter.getService()
-                .login(un, pw, "Login")
+        LoginHelper.helper.login(un, pw)
                 .subscribe(success -> {
                     pageManager.pop(LoginPage.this);
                     myObservable.notifyObservers(success);

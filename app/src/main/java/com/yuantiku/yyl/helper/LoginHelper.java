@@ -5,12 +5,10 @@ import com.yuantiku.yyl.interfaces.WikiService;
 import com.yuantiku.yyl.webadapter.WikiAdapter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import retrofit.client.Response;
@@ -25,25 +23,22 @@ public enum LoginHelper {
     helper;
 
     private WikiService service;
-    private List<Account> accountList;
-    private Action1<Account> onNextAction;
 
     LoginHelper() {
         service = WikiAdapter.getService();
-        accountList = new ArrayList<>();
     }
 
-    public void login(String name, String password) {
-        service.login(name, password, "Login")
-                .subscribe(success -> loadMembers(), failure -> L.e(failure.getMessage()));
+    public Observable<Response> login(String name, String password) {
+        return service.login(name, password, "Login");
     }
 
-    private void loadMembers() {
+    public void loadMembers(Action1<List<Account>> onNextAction) {
         service.getMembers()
-                .subscribe(this::parseResponse, error -> L.e(error.getMessage()));
+                .subscribe(response -> parseResponse(response, onNextAction),
+                        error -> L.e(error.getMessage()));
     }
 
-    private void parseResponse(Response response) {
+    private void parseResponse(Response response, Action1<List<Account>> onNextAction) {
         Document document;
         try {
             document = Jsoup.parse(response.getBody().in(), "UTF-8",
@@ -53,33 +48,31 @@ public enum LoginHelper {
             return;
         }
         Elements items = document.getElementsByTag("tr");
-        for (Element item : items) {
-            Elements attrs = item.getElementsByTag("td");
-            String[] res = attrs.text().split(" ");
-            saveAccount(res);
-        }
-        Observable.from(accountList)
-                .subscribe(onNextAction);
-        AccountDBHelper.helper.save(accountList);
+        Observable.from(items)
+                .map(item -> item.getElementsByTag("td").text().split(" "))
+                .map(this::parseAccout)
+                .toList()
+                .subscribe(accountList -> {
+                    AccountDBHelper.helper.clear();
+                    AccountDBHelper.helper.save(accountList);
+                    onNextAction.call(accountList);
+                });
     }
 
-    private void saveAccount(String[] infos) {
-        if (infos.length < 8) {
-            return;
+    private Account parseAccout(String[] info) {
+        if (info.length < 8) {
+            return null;
         }
         Account account = new Account();
-        account.setName(infos[0]);
-        account.setLdap(infos[1]);
-        account.setEmail(infos[2]);
-        account.setPhone(infos[3]);
-        account.setDept(infos[4]);
-        account.setGoogleAccount(infos[5]);
-        account.setBirth(infos[6]);
-        account.setConstellation(infos[7]);
-        accountList.add(account);
+        account.setName(info[0]);
+        account.setLdap(info[1]);
+        account.setEmail(info[2]);
+        account.setPhone(info[3]);
+        account.setDept(info[4]);
+        account.setGoogleAccount(info[5]);
+        account.setBirth(info[6]);
+        account.setConstellation(info[7]);
+        return account;
     }
 
-    public void setOnNextAction(Action1<Account> onNextAction) {
-        this.onNextAction = onNextAction;
-    }
 }

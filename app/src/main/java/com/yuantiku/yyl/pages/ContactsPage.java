@@ -10,21 +10,12 @@ import android.view.View;
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.adapter.ContactAdapter;
-import com.yuantiku.yyl.helper.AccountDBHelper;
+import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.interfaces.OnItemClickListener;
-import com.yuantiku.yyl.webadapter.WikiAdapter;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import butterknife.InjectView;
-import retrofit.client.Response;
 
 /**
  * @author wanghb
@@ -50,7 +41,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
 
     @Override
     protected View setupView(View view) {
-        swipeRefreshLayout.setOnRefreshListener(() -> swipeRefreshLayout.setRefreshing(false));
+        swipeRefreshLayout.setOnRefreshListener(() -> refreshData());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.YELLOW);
         initVertical();
         return super.setupView(view);
@@ -60,6 +51,9 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        adapter = new ContactAdapter(null);
+        adapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(adapter);
         refreshData();
     }
 
@@ -74,59 +68,13 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
 
     private void refreshData() {
         progress.setVisibility(View.VISIBLE);
-        WikiAdapter
-                .getService()
-                .getMembers()
-                .subscribe(response -> updateData(parseResponse(response)),
-                        failure -> progress.setVisibility(View.GONE));
+        LoginHelper.helper.loadMembers(this::updateData);
     }
 
     private void updateData(List<Account> accounts) {
-        if (adapter == null) {
-            adapter = new ContactAdapter(accounts);
-            adapter.setOnItemClickListener(this);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.updateData(accounts);
-        }
+        progress.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
+        adapter.updateData(accounts);
     }
 
-    private List<Account> parseResponse(Response response) {
-        Document document;
-        try {
-            document = Jsoup.parse(response.getBody().in(), "UTF-8",
-                    "https://wiki.zhenguanyu.com/");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-        List<Account> accounts = new ArrayList<>();
-        Elements items = document.getElementsByTag("tr");
-        for (Element item : items) {
-            Elements attrs = item.getElementsByTag("td");
-            String[] res = attrs.text().split(" ");
-            Account account = saveAccount(res);
-            if (account != null) {
-                accounts.add(account);
-            }
-        }
-        AccountDBHelper.helper.save(accounts);
-        return accounts;
-    }
-
-    private Account saveAccount(String[] infos) {
-        if (infos.length < 8) {
-            return null;
-        }
-        Account account = new Account();
-        account.setName(infos[0]);
-        account.setLdap(infos[1]);
-        account.setEmail(infos[2]);
-        account.setPhone(infos[3]);
-        account.setDept(infos[4]);
-        account.setGoogleAccount(infos[5]);
-        account.setBirth(infos[6]);
-        account.setConstellation(infos[7]);
-        return account;
-    }
 }

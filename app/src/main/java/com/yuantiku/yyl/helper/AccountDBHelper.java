@@ -1,6 +1,7 @@
 package com.yuantiku.yyl.helper;
 
 import android.database.sqlite.SQLiteDatabase;
+
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.dbdata.AccountDao;
 import com.yuantiku.dbdata.DaoMaster;
@@ -23,7 +24,8 @@ public enum AccountDBHelper {
     private AccountDao accountDao;
 
     AccountDBHelper() {
-        DevOpenHelper helper = new DaoMaster.DevOpenHelper(MyApplication.getInstance().getApplicationContext(),
+        DevOpenHelper helper = new DaoMaster.DevOpenHelper(MyApplication.getInstance()
+                .getApplicationContext(),
                 "accounds-db", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
@@ -31,15 +33,19 @@ public enum AccountDBHelper {
         accountDao = daoSession.getAccountDao();
     }
 
-    public List<Account> getAccounts(){
+    public List<Account> getAccounts() {
         return accountDao.loadAll();
     }
 
-    public void save(Account account){
+    public void save(Account account) {
         accountDao.insertOrReplace(account);
     }
 
-    public void save(List<Account> accounts){
+    public void save(List<Account> accounts) {
         accountDao.insertOrReplaceInTx(accounts);
+    }
+
+    public void clear() {
+        accountDao.deleteAll();
     }
 }
