@@ -13,7 +13,7 @@ import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.adapter.ContactAdapter;
 import com.yuantiku.yyl.helper.L;
-import com.yuantiku.yyl.helper.LoginHelper;
+import com.yuantiku.yyl.helper.ZGYWikiHelper;
 import com.yuantiku.yyl.interfaces.OnItemClickListener;
 
 import java.util.List;
@@ -71,7 +71,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
 
     private void refreshData() {
         progress.setVisibility(View.VISIBLE);
-        LoginHelper.helper.loadMembers(this::updateData, this::handleException);
+        ZGYWikiHelper.helper.loadMembers(this::updateData, this::handleException);
     }
 
     private void handleException(Throwable e) {

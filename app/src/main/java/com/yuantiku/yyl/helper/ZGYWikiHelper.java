@@ -20,12 +20,12 @@ import rx.functions.Action1;
  * @author lirui
  * @date 15/4/29.
  */
-public enum LoginHelper {
+public enum ZGYWikiHelper {
     helper;
 
     private WikiService service;
 
-    LoginHelper() {
+    ZGYWikiHelper() {
         service = WikiAdapter.getService();
     }
 
@@ -55,12 +55,13 @@ public enum LoginHelper {
                 .map(item -> item.getElementsByTag("td").text().split(" "))
                 .map(this::parseAccount)
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(onNextAction)
-                .subscribe(accountList -> {
+                .doOnNext(accountList -> {
                     AccountDBHelper.helper.clear();
                     AccountDBHelper.helper.save(accountList);
-                });
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onNextAction);
+        ;
     }
 
     private Account parseAccount(String[] info) {

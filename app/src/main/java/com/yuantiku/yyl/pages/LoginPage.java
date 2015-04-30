@@ -8,7 +8,7 @@ import butterknife.OnClick;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
-import com.yuantiku.yyl.helper.LoginHelper;
+import com.yuantiku.yyl.helper.ZGYWikiHelper;
 import com.yuantiku.yyl.util.LogUtils;
 
 /**
@@ -37,7 +37,7 @@ public class LoginPage extends BasePage {
     public void login(View view) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
-        LoginHelper.helper.login(un, pw)
+        ZGYWikiHelper.helper.login(un, pw)
                 .subscribe(success -> {
                     pageManager.pop(LoginPage.this);
                     myObservable.notifyObservers(success);
