@@ -7,15 +7,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import butterknife.InjectView;
+
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.adapter.ContactAdapter;
+import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.interfaces.OnItemClickListener;
 
 import java.util.List;
 
-import butterknife.InjectView;
+import retrofit.RetrofitError;
 
 /**
  * @author wanghb
@@ -41,7 +44,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
 
     @Override
     protected View setupView(View view) {
-        swipeRefreshLayout.setOnRefreshListener(() -> refreshData());
+        swipeRefreshLayout.setOnRefreshListener(this::refreshData);
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.YELLOW);
         initVertical();
         return super.setupView(view);
@@ -68,7 +71,20 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
 
     private void refreshData() {
         progress.setVisibility(View.VISIBLE);
-        LoginHelper.helper.loadMembers(this::updateData);
+        LoginHelper.helper.loadMembers(this::updateData, this::handleException);
+    }
+
+    private void handleException(Throwable e) {
+        if (e instanceof RetrofitError) {
+            if (((RetrofitError) e).getResponse().getStatus() == 403) {
+                BasePage loginPage = new LoginPage();
+                loginPage.addObserver(this);
+                pageManager.push(loginPage);
+            }
+        } else {
+            L.e(e.getMessage());
+        }
+
     }
 
     private void updateData(List<Account> accounts) {

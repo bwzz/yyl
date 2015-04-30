@@ -33,10 +33,11 @@ public enum LoginHelper {
         return service.login(name, password, "Login");
     }
 
-    public void loadMembers(Action1<List<Account>> onNextAction) {
+    public void loadMembers(Action1<List<Account>> onNextAction,
+            Action1<Throwable> onErrorAction) {
         service.getMembers()
                 .subscribe(response -> parseResponse(response, onNextAction),
-                        error -> L.e(error.getMessage()));
+                        onErrorAction);
     }
 
     private void parseResponse(Response response, Action1<List<Account>> onNextAction) {

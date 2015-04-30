@@ -18,9 +18,7 @@ public class MainActivity extends BaseActivity implements MyObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageManager = new PageManager(getSupportFragmentManager(), R.id.container);
-        BasePage loginPage = new LoginPage();
-        loginPage.addObserver(this);
-        pageManager.push(loginPage);
+        update(null, null);
     }
 
     @Override

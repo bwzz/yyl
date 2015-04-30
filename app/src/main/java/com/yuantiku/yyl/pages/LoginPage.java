@@ -3,13 +3,13 @@ package com.yuantiku.yyl.pages;
 import android.view.View;
 import android.widget.TextView;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.LoginHelper;
 import com.yuantiku.yyl.util.LogUtils;
-
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * @author wanghb
