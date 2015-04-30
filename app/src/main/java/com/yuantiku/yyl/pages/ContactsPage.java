@@ -12,6 +12,7 @@ import butterknife.InjectView;
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.adapter.ContactAdapter;
+import com.yuantiku.yyl.helper.AccountDBHelper;
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.ZGYWikiHelper;
 import com.yuantiku.yyl.interfaces.OnItemClickListener;
@@ -58,6 +59,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         adapter = new ContactAdapter(null);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
+        updateData(AccountDBHelper.helper.getAccounts());
         refreshData();
     }
 
@@ -75,8 +77,10 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
     }
 
     private void handleException(Throwable e) {
+
         if (e instanceof RetrofitError) {
-            if (((RetrofitError) e).getResponse().getStatus() == 403) {
+            RetrofitError error = (RetrofitError)e;
+            if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
                 BasePage loginPage = new LoginPage();
                 loginPage.addObserver(this);
                 pageManager.push(loginPage);
@@ -84,7 +88,6 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         } else {
             L.e(e.getMessage());
         }
-
     }
 
     @Override
@@ -98,5 +101,4 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         swipeRefreshLayout.setRefreshing(false);
         adapter.updateData(accounts);
     }
-
 }
