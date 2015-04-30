@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 
 import retrofit.client.Response;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
@@ -49,17 +50,19 @@ public enum LoginHelper {
         }
         Elements items = document.getElementsByTag("tr");
         Observable.from(items)
+                .skip(1) // 第一个item是标题
                 .map(item -> item.getElementsByTag("td").text().split(" "))
-                .map(this::parseAccout)
+                .map(this::parseAccount)
                 .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(onNextAction)
                 .subscribe(accountList -> {
                     AccountDBHelper.helper.clear();
                     AccountDBHelper.helper.save(accountList);
-                    onNextAction.call(accountList);
                 });
     }
 
-    private Account parseAccout(String[] info) {
+    private Account parseAccount(String[] info) {
         if (info.length < 8) {
             return null;
         }
