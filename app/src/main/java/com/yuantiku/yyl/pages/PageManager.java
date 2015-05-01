@@ -47,4 +47,8 @@ public class PageManager {
         fragmentTransaction.remove(page);
         fragmentTransaction.commit();
     }
+
+    public void popAll() {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
 }

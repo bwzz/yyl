@@ -77,17 +77,28 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
     }
 
     private void handleException(Throwable e) {
-
         if (e instanceof RetrofitError) {
             RetrofitError error = (RetrofitError)e;
             if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
-                BasePage loginPage = new LoginPage();
-                loginPage.addObserver(this);
-                pageManager.push(loginPage);
+                toLogin();
+            } else {
+                List<Account> accounts = AccountDBHelper.helper.getAccounts();
+                if (accounts == null || accounts.isEmpty()) {
+                    toLogin();
+                } else {
+                    updateData(accounts);
+                }
             }
         } else {
             L.e(e.getMessage());
+            toLogin();
         }
+    }
+
+    private void toLogin() {
+        BasePage loginPage = new LoginPage();
+        loginPage.addObserver(this);
+        pageManager.push(loginPage);
     }
 
     @Override
