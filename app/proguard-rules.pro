@@ -15,3 +15,5 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+#
+-assumenosideeffects class package com.yuantiku.yyl.helper.L { *; }
