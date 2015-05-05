@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.yuantiku.yyl.BuildConfig;
+import com.yuantiku.yyl.helper.L;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,7 +76,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                LogUtils.e(e.getMessage());
+                L.e(e.getMessage());
             }
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());
@@ -90,7 +91,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
      * @return true:如果处理了该异常信息;否则返回false.
      */
     private boolean handleException(Throwable ex) {
-        LogUtils.e("handle exception : \n", ex);
+        L.e("handle exception : \n", ex);
         if (ex == null) {
             return false;
         }
@@ -109,8 +110,8 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // 收集设备参数信息
             collectDeviceInfo(mContext);
             // 保存日志文件
-            LogUtils.e(ex.getMessage());
-//            saveCrashInfo2File(ex);
+            L.e(ex.getMessage());
+            // saveCrashInfo2File(ex);
         }
         return true;
     }
@@ -131,16 +132,16 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 infos.put("versionCode", versionCode);
             }
         } catch (NameNotFoundException e) {
-            LogUtils.e("an error occured when collect package info", e);
+            L.e("an error occured when collect package info", e);
         }
         Field[] fields = Build.class.getDeclaredFields();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
                 infos.put(field.getName(), field.get(null).toString());
-                LogUtils.d(field.getName() + " : " + field.get(null));
+                L.d(field.getName() + " : " + field.get(null));
             } catch (Exception e) {
-                LogUtils.e("an error occured when collect crash info", e);
+                L.e("an error occured when collect crash info", e);
             }
         }
     }
@@ -186,7 +187,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
             return fileName;
         } catch (Exception e) {
-            LogUtils.e("an error occured while writing file...", e);
+            L.e("an error occured while writing file...", e);
         }
         return null;
     }

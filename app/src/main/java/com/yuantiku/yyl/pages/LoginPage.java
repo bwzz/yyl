@@ -9,13 +9,12 @@ import butterknife.OnClick;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.ZGYWikiHelper;
-import com.yuantiku.yyl.util.LogUtils;
 
 /**
  * @author wanghb
  * @date 15/4/25.
  */
-public class LoginPage extends BasePage {
+public class LoginPage extends FragmentPage {
 
     @InjectView(R.id.username)
     TextView username;
@@ -47,7 +46,7 @@ public class LoginPage extends BasePage {
 
     @Override
     public boolean interceptBackPressed() {
-        LogUtils.i("interceptBackPressed");
+        L.i("interceptBackPressed");
         return true;
     }
 }

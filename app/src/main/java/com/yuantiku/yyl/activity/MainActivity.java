@@ -3,12 +3,12 @@ package com.yuantiku.yyl.activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.AccountDBHelper;
 import com.yuantiku.yyl.pages.ContactsPage;
-import com.yuantiku.yyl.pages.PageManager;
+import com.yuantiku.yyl.pages.FragmentPageManager;
+import com.yuantiku.yyl.pages.interfaces.PageManager;
 import com.yuantiku.yyl.util.PersistentCookieStore;
 
 public class MainActivity extends BaseActivity {
@@ -20,8 +20,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageManager = new PageManager(getSupportFragmentManager(),
-                (ViewGroup) findViewById(R.id.container));
+        pageManager = new FragmentPageManager(getSupportFragmentManager(), R.id.container);
         pageManager.push(new ContactsPage(), CONTACTS);
     }
 

@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.yuantiku.yyl.helper.L;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -144,7 +146,6 @@ public class PreferencesCookieStore implements CookieStore {
         return cookies.get(name);
     }
 
-
     protected String encodeCookie(SerializableCookie cookie) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
@@ -165,7 +166,7 @@ public class PreferencesCookieStore implements CookieStore {
             ObjectInputStream ois = new ObjectInputStream(is);
             cookie = ((SerializableCookie) ois.readObject()).getCookie();
         } catch (Throwable e) {
-            LogUtils.e(e.getMessage(), e);
+            L.e(e.getMessage(), e);
         }
 
         return cookie;
@@ -189,11 +190,11 @@ public class PreferencesCookieStore implements CookieStore {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(
+                    s.charAt(i + 1), 16));
         }
         return data;
     }
-
 
     public class SerializableCookie implements Serializable {
         private static final long serialVersionUID = 6374381828722046732L;

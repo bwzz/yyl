@@ -21,7 +21,7 @@ import java.util.Random;
  * @author wanghb
  * @date 15/4/29.
  */
-public class DetailPage extends BasePage {
+public class DetailPage extends FragmentPage {
     @InjectView(R.id.name)
     TextView name;
 

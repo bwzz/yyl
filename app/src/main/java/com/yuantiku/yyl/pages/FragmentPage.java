@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 
+import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
+import com.yuantiku.yyl.pages.interfaces.Page;
+import com.yuantiku.yyl.pages.interfaces.PageManager;
 
 /**
  * @author wanghb
  * @date 15/4/25.
  */
-public class BasePage extends Fragment implements MyObserver {
+public class FragmentPage extends Fragment implements MyObserver, Page {
 
     protected MyObservable myObservable = new MyObservable();
 
@@ -26,6 +29,7 @@ public class BasePage extends Fragment implements MyObserver {
 
     protected PageManager pageManager;
 
+    @Override
     public void setPageManager(PageManager pageManager) {
         this.pageManager = pageManager;
     }
@@ -72,5 +76,25 @@ public class BasePage extends Fragment implements MyObserver {
     @Override
     public final void update(java.util.Observable observable, Object data) {
         update((MyObservable) observable, data);
+    }
+
+    @Override
+    public void prePush() {
+        L.i("prePush");
+    }
+
+    @Override
+    public void postPush() {
+        L.i("postPush");
+    }
+
+    @Override
+    public void prePop() {
+        L.i("prePop");
+    }
+
+    @Override
+    public void postPop() {
+        L.i("postPop");
     }
 }

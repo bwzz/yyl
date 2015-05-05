@@ -15,6 +15,8 @@
 
 package com.yuantiku.yyl.util;
 
+import com.yuantiku.yyl.helper.L;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +27,14 @@ import org.apache.http.protocol.HTTP;
  */
 public class CharsetUtils {
 
-    private CharsetUtils() {
-    }
+    private CharsetUtils() {}
 
     public static String toCharset(final String str, final String charset, int judgeCharsetLength) {
         try {
             String oldCharset = getEncoding(str, judgeCharsetLength);
             return new String(str.getBytes(oldCharset), charset);
         } catch (Throwable ex) {
-            LogUtils.w(ex);
+            L.w(ex);
             return str;
         }
     }
@@ -51,7 +52,8 @@ public class CharsetUtils {
 
     public static boolean isCharset(final String str, final String charset, int judgeCharsetLength) {
         try {
-            String temp = str.length() > judgeCharsetLength ? str.substring(0, judgeCharsetLength) : str;
+            String temp = str.length() > judgeCharsetLength ? str.substring(0, judgeCharsetLength)
+                    : str;
             return temp.equals(new String(temp.getBytes(charset), charset));
         } catch (Throwable e) {
             return false;

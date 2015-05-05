@@ -26,7 +26,7 @@ import retrofit.RetrofitError;
  * @author wanghb
  * @date 15/4/29.
  */
-public class ContactsPage extends BasePage implements OnItemClickListener {
+public class ContactsPage extends FragmentPage implements OnItemClickListener {
 
     @InjectView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -99,7 +99,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
     }
 
     private void toLogin() {
-        BasePage loginPage = new LoginPage();
+        FragmentPage loginPage = new LoginPage();
         loginPage.addObserver(this);
         pageManager.push(loginPage, null);
     }
