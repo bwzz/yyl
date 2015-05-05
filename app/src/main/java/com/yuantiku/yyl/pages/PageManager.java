@@ -2,6 +2,9 @@ package com.yuantiku.yyl.pages;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.ViewGroup;
+
+import com.yuantiku.yyl.helper.L;
 
 /**
  * @author wanghb
@@ -12,26 +15,19 @@ public class PageManager {
 
     private int containerViewId;
 
-    public PageManager(FragmentManager fragmentManager, int containerViewId) {
-        this.fragmentManager = fragmentManager;
-        this.containerViewId = containerViewId;
-    }
+    private ViewGroup containerView;
 
-    public void push(BasePage page) {
-        push(page, null);
+    public PageManager(FragmentManager fragmentManager, ViewGroup containerView) {
+        this.fragmentManager = fragmentManager;
+        this.containerViewId = containerView.getId();
+        this.containerView = containerView;
     }
 
     public void push(BasePage page, String tag) {
-        push(page, tag, true);
-    }
-
-    public void push(BasePage page, String tag, boolean addToBackStack) {
+        L.i("push page " + tag + " : " + page.getClass().getName());
         page.setPageManager(this);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(containerViewId, page, tag);
-        if (addToBackStack) {
-            fragmentTransaction.addToBackStack(tag);
-        }
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
@@ -42,13 +38,19 @@ public class PageManager {
     }
 
     public void pop(BasePage page) {
+        L.i("pop page " + " : " + page.getClass().getName());
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         fragmentTransaction.remove(page);
         fragmentTransaction.commit();
     }
 
-    public void popAll() {
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    public void resetWithStartPage(BasePage page, String tag) {
+        L.i("reset with start page " + tag + ":" + page.getClass().getName());
+        page.setPageManager(this);
+        containerView.removeAllViews();
+        fragmentManager.beginTransaction()
+                .replace(containerViewId, page, tag)
+                .commit();
     }
 }

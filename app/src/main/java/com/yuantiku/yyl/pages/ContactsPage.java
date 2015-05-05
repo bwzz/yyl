@@ -59,7 +59,7 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         adapter = new ContactAdapter(null);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
-        updateData(AccountDBHelper.helper.getAccounts());
+        loadLocalAccounts();
         refreshData();
     }
 
@@ -69,36 +69,39 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         Bundle bundle = new Bundle();
         bundle.putSerializable(Account.class.getName(), (java.io.Serializable) data);
         detailPage.setArguments(bundle);
-        pageManager.push(detailPage);
+        pageManager.push(detailPage, null);
     }
 
     private void refreshData() {
+        if (adapter == null || adapter.getItemCount() <= 0) {
+            progress.setVisibility(View.VISIBLE);
+        }
         ZGYWikiHelper.helper.loadMembers(this::updateData, this::handleException);
     }
 
     private void handleException(Throwable e) {
         if (e instanceof RetrofitError) {
-            RetrofitError error = (RetrofitError)e;
+            RetrofitError error = (RetrofitError) e;
             if (error.getResponse() != null && error.getResponse().getStatus() == 403) {
                 toLogin();
             } else {
-                List<Account> accounts = AccountDBHelper.helper.getAccounts();
-                if (accounts == null || accounts.isEmpty()) {
-                    toLogin();
-                } else {
-                    updateData(accounts);
-                }
+                loadLocalAccounts();
             }
         } else {
-            L.e(e.getMessage());
+            L.e(e);
             toLogin();
         }
+    }
+
+    private void loadLocalAccounts() {
+        List<Account> accounts = AccountDBHelper.helper.getAccounts();
+        updateData(accounts);
     }
 
     private void toLogin() {
         BasePage loginPage = new LoginPage();
         loginPage.addObserver(this);
-        pageManager.push(loginPage);
+        pageManager.push(loginPage, null);
     }
 
     @Override
@@ -112,4 +115,5 @@ public class ContactsPage extends BasePage implements OnItemClickListener {
         swipeRefreshLayout.setRefreshing(false);
         adapter.updateData(accounts);
     }
+
 }

@@ -59,7 +59,8 @@ public class BasePage extends Fragment implements MyObserver {
     }
 
     public boolean interceptBackPressed() {
-        return false;
+        pageManager.pop(this);
+        return true;
     }
 
     @Override

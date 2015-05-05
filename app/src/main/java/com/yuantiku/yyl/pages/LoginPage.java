@@ -42,7 +42,7 @@ public class LoginPage extends BasePage {
                     pageManager.pop(LoginPage.this);
                     myObservable.notifyObservers(success);
                 },
-                        failure -> L.e(failure.getMessage()));
+                        failure -> L.e(failure));
     }
 
     @Override

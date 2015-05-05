@@ -21,6 +21,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 
+import com.yuantiku.yyl.helper.L;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -135,7 +137,7 @@ public class OtherUtils {
             final StatFs stats = new StatFs(dir.getPath());
             return (long) stats.getBlockSize() * (long) stats.getAvailableBlocks();
         } catch (Throwable e) {
-            LogUtils.e(e.getMessage(), e);
+            L.e(e.getMessage(), e);
             return -1;
         }
 
@@ -257,7 +259,7 @@ public class OtherUtils {
                 sslContext.init(null, trustAllCerts, null);
                 sslSocketFactory = sslContext.getSocketFactory();
             } catch (Throwable e) {
-                LogUtils.e(e.getMessage(), e);
+                L.e(e.getMessage(), e);
             }
         }
 
