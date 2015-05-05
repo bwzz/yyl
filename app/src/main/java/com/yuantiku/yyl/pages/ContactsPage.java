@@ -116,4 +116,8 @@ public class ContactsPage extends FragmentPage implements OnItemClickListener {
         adapter.updateData(accounts);
     }
 
+    @Override
+    public boolean interceptBackPressed() {
+        return false;
+    }
 }
