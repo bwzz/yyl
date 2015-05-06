@@ -6,9 +6,15 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
+import com.github.johnpersano.supertoasts.SuperActivityToast;
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.SuperToast.Duration;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.helper.ZGYWikiHelper;
+import com.yuantiku.yyl.util.OtherUtils;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * @author wanghb
@@ -36,17 +42,30 @@ public class LoginPage extends FragmentPage {
     public void login(View view) {
         String un = username.getText().toString();
         String pw = password.getText().toString();
+        OtherUtils.hideSoftKeyboard(getActivity(), password);
+        L.i("login ", un);
+        SuperActivityToast superActivityToast = new SuperActivityToast(getActivity(),
+                SuperToast.Type.PROGRESS);
+        superActivityToast.setText("登录中...");
+        superActivityToast.show();
         ZGYWikiHelper.helper.login(un, pw)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(success -> {
+                    superActivityToast.dismiss();
                     pageManager.pop(LoginPage.this);
                     myObservable.notifyObservers(success);
                 },
-                        failure -> L.e(failure));
+                        failure -> {
+                            L.e(failure);
+                            superActivityToast.dismiss();
+                            SuperToast.create(getActivity(), "登录失败", Duration.SHORT).show();
+                        });
     }
 
     @Override
     public boolean interceptBackPressed() {
         L.i("interceptBackPressed");
+        getActivity().finish();
         return true;
     }
 }

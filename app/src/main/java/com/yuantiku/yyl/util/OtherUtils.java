@@ -20,6 +20,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.yuantiku.yyl.helper.L;
 
@@ -47,12 +49,11 @@ import org.apache.http.protocol.HTTP;
  * Created by wyouflf on 13-8-30.
  */
 public class OtherUtils {
-    private OtherUtils() {
-    }
+    private OtherUtils() {}
 
     /**
-     * @param context if null, use the default format
-     *                (Mozilla/5.0 (Linux; U; Android %s) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 %sSafari/534.30).
+     * @param context if null, use the default format (Mozilla/5.0 (Linux; U; Android %s)
+     *            AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 %sSafari/534.30).
      * @return
      */
     public static String getUserAgent(Context context) {
@@ -63,8 +64,7 @@ public class OtherUtils {
                 Field webUserAgentField = sysResCls.getDeclaredField("web_user_agent");
                 Integer resId = (Integer) webUserAgentField.get(null);
                 webUserAgent = context.getString(resId);
-            } catch (Throwable ignored) {
-            }
+            } catch (Throwable ignored) {}
         }
         if (TextUtils.isEmpty(webUserAgent)) {
             webUserAgent = "Mozilla/5.0 (Linux; U; Android %s) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 %sSafari/533.1";
@@ -144,7 +144,8 @@ public class OtherUtils {
     }
 
     public static boolean isSupportRange(final HttpResponse response) {
-        if (response == null) return false;
+        if (response == null)
+            return false;
         Header header = response.getFirstHeader("Accept-Ranges");
         if (header != null) {
             return "bytes".equals(header.getValue());
@@ -158,7 +159,8 @@ public class OtherUtils {
     }
 
     public static String getFileNameFromHttpResponse(final HttpResponse response) {
-        if (response == null) return null;
+        if (response == null)
+            return null;
         String result = null;
         Header header = response.getFirstHeader("Content-Disposition");
         if (header != null) {
@@ -176,7 +178,8 @@ public class OtherUtils {
     }
 
     public static Charset getCharsetFromHttpRequest(final HttpRequestBase request) {
-        if (request == null) return null;
+        if (request == null)
+            return null;
         String charsetName = null;
         Header header = request.getFirstHeader("Content-Type");
         if (header != null) {
@@ -193,8 +196,7 @@ public class OtherUtils {
         if (!TextUtils.isEmpty(charsetName)) {
             try {
                 isSupportedCharset = Charset.isSupported(charsetName);
-            } catch (Throwable e) {
-            }
+            } catch (Throwable e) {}
         }
 
         return isSupportedCharset ? Charset.forName(charsetName) : null;
@@ -202,7 +204,8 @@ public class OtherUtils {
 
     private static final int STRING_BUFFER_LENGTH = 100;
 
-    public static long sizeOfString(final String str, String charset) throws UnsupportedEncodingException {
+    public static long sizeOfString(final String str, String charset)
+            throws UnsupportedEncodingException {
         if (TextUtils.isEmpty(str)) {
             return 0;
         }
@@ -238,22 +241,22 @@ public class OtherUtils {
     public static void trustAllHttpsURLConnection() {
         // Create a trust manager that does not validate certificate chains
         if (sslSocketFactory == null) {
-            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
+            TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
 
-                @Override
-                public void checkClientTrusted(X509Certificate[] certs,
-                                               String authType) {
-                }
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] certs,
+                            String authType) {}
 
-                @Override
-                public void checkServerTrusted(X509Certificate[] certs,
-                                               String authType) {
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] certs,
+                            String authType) {}
                 }
-            }};
+            };
             try {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, trustAllCerts, null);
@@ -265,7 +268,20 @@ public class OtherUtils {
 
         if (sslSocketFactory != null) {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
-            HttpsURLConnection.setDefaultHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            HttpsURLConnection
+                    .setDefaultHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         }
+    }
+
+    public static void hideSoftKeyboard(Context context, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showSoftKeyBoard(Context context, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 }
