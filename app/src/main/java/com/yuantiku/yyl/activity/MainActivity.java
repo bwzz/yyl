@@ -1,8 +1,11 @@
 package com.yuantiku.yyl.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import butterknife.InjectView;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.AccountDBHelper;
@@ -13,6 +16,8 @@ import com.yuantiku.yyl.util.PersistentCookieStore;
 
 public class MainActivity extends BaseActivity {
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     private PageManager pageManager;
 
     private final static String CONTACTS = "contacts";
@@ -20,6 +25,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSupportActionBar(toolbar);
         pageManager = new FragmentPageManager(getSupportFragmentManager(), R.id.container);
         pageManager.push(new ContactsPage(), CONTACTS);
     }
@@ -38,7 +44,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, toolbar.getMenu());
         return super.onCreateOptionsMenu(menu);
     }
 
