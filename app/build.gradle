@@ -12,10 +12,29 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('data/yyl.properties').newDataInputStream())
+
+    signingConfigs {
+        configs {
+            storeFile project.rootProject.file("data/yyl.jks")
+            storePassword properties.getProperty("yyl.storePassword")
+            keyAlias properties.getProperty("yyl.keyAlias")
+            keyPassword properties.getProperty("yyl.keyPassword")
+        }
+    }
+
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.configs
+        }
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro','proguard-yuantiku.pro'
+            signingConfig signingConfigs.configs
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

@@ -16,4 +16,34 @@
 #   public *;
 #}
 #
--assumenosideeffects class package com.yuantiku.yyl.helper.L { *; }
+-keep class ** { *; }
+-keep enum ** { *; }
+-keep interface ** { *; }
+-assumenosideeffects class com.yuantiku.yyl.helper.L { *; }
+
+-dontwarn java.**
+-keep class java.** { *; }
+-keep interface java.** { *; }
+
+-dontwarn android.support.v7.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
+-dontwarn butterknife.internal.**
+-keep class **$$ViewInjector { *; }
+-keepnames class * { @butterknife.InjectView *;}
+
+-keepattributes *Annotation*
+-keepattributes Signature
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+-dontwarn rx.**
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit.http.* <methods>;
+}
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement

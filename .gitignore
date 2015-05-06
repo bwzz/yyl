@@ -8,3 +8,4 @@ gradle/local.properties
 obj/
 app/proguard*.txt
 MyDaoGenerator/build
+data/
