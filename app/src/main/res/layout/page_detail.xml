@@ -23,21 +23,6 @@
         app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="true">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/avatar"
-            fresco:fadeDuration="2000"
-            fresco:actualImageScaleType="focusCrop"
-            fresco:backgroundImage="@drawable/at"
-            fresco:failureImage="@drawable/at"
-            fresco:placeholderImageScaleType="fitXY"
-            fresco:roundedCornerRadius="20dp"
-            fresco:roundBottomLeft="false"
-            fresco:roundTopRight="false"
-            fresco:retryImage="@drawable/at"
-            fresco:roundWithOverlayColor="@android:color/holo_green_light"
-            android:layout_width="80dp"
-            android:layout_gravity="center"
-            android:layout_height="80dp"/>
 
         <TextView
             android:id="@+id/constellationName"

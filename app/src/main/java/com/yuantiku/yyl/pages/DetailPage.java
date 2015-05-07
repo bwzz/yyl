@@ -8,14 +8,13 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.InjectView;
-import butterknife.OnClick;
-
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
 
 import java.util.Random;
+
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * @author wanghb
@@ -40,9 +39,6 @@ public class DetailPage extends FragmentPage {
     @InjectView(R.id.constellationName)
     TextView constellationName;
 
-    @InjectView(R.id.avatar)
-    SimpleDraweeView avatar;
-
     private Account contact;
 
     @Override
@@ -54,7 +50,6 @@ public class DetailPage extends FragmentPage {
     protected View setupView(View view) {
         contact = (Account) getArguments().get(Account.class.getName());
         name.setText(contact.getName());
-        avatar.setImageURI(Uri.parse("res://drawable/" + R.drawable.at), this);
         phone.setText(contact.getPhone());
         email.setText(contact.getEmail());
         birthday.setText(contact.getBirth());
@@ -67,7 +62,6 @@ public class DetailPage extends FragmentPage {
         shape.getPaint().setColor(Color.argb(220, random.nextInt(255), random.nextInt(255),
                 random.nextInt(255)));
         constellationName.setBackgroundDrawable(shape);
-        avatar.setVisibility(View.INVISIBLE);
 
         return super.setupView(view);
     }
