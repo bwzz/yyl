@@ -1,8 +1,8 @@
 package com.yuantiku.yyl.helper;
 
 import com.yuantiku.dbdata.Account;
-import com.yuantiku.yyl.interfaces.WikiService;
 import com.yuantiku.yyl.webadapter.WikiAdapter;
+import com.yuantiku.yyl.webadapter.WikiAdapter.WikiService;
 
 import java.io.IOException;
 import java.util.List;

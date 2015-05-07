@@ -9,6 +9,7 @@ import butterknife.InjectView;
 
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.AccountDBHelper;
+import com.yuantiku.yyl.helper.UpdateHelper;
 import com.yuantiku.yyl.pages.ContactsPage;
 import com.yuantiku.yyl.pages.FragmentPageManager;
 import com.yuantiku.yyl.pages.interfaces.PageManager;
@@ -28,6 +29,7 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         pageManager = new FragmentPageManager(getSupportFragmentManager(), R.id.container);
         pageManager.push(new ContactsPage(), CONTACTS);
+        UpdateHelper.helper.checkUpdate(this);
     }
 
     @Override
