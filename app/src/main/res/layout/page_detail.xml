@@ -2,13 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_margin="5dp"
-    android:divider="@android:color/holo_blue_bright"
-    android:background="@android:color/holo_blue_light"
-    android:dividerPadding="1dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:background="@android:color/holo_blue_light"
+    android:divider="@android:color/holo_blue_bright"
+    android:dividerPadding="1dp"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -19,67 +19,68 @@
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
         app:cardMaxElevation="1dp"
-        app:cardUseCompatPadding="true"
-        app:cardPreventCornerOverlap="true">
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
 
 
         <TextView
             android:id="@+id/constellationName"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:textSize="40sp"
-            android:textColor="@android:color/white"
             android:gravity="center"
             android:text="@string/app_name"
-            android:layout_width="120dp"
-            android:layout_height="120dp"/>
+            android:textColor="@android:color/white"
+            android:textSize="40sp"/>
 
         <TextView
             android:id="@+id/name"
-            android:textSize="30sp"
-            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_margin="5dp"
             android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textSize="30sp"/>
     </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/phone"
-        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/ic_dialog_dialer"
         android:padding="10dp"
-        android:drawableRight="@android:drawable/stat_sys_phone_call"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textSize="22sp"/>
 
     <TextView
         android:id="@+id/email"
-        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:drawableRight="@android:drawable/sym_action_email"
+        android:drawableRight="@android:drawable/ic_dialog_email"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textSize="22sp"/>
 
     <TextView
         android:id="@+id/birthday"
-        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textSize="22sp"/>
 
     <TextView
-        android:id="@+id/constellation"
-        android:textSize="22sp"
+        android:id="@+id/googleAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:drawableRight="@android:drawable/ic_dialog_email"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textSize="22sp"/>
 
 </LinearLayout>
