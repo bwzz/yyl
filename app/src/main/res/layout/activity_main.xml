@@ -13,8 +13,7 @@
         app:title="@string/app_name"
         app:theme="@style/MyToolbarStyle"
         app:titleTextAppearance="@style/ToolbarTextAppearance"
-        android:background="@color/main_color"
-        app:navigationIcon="@mipmap/ic_launcher"/>
+        android:background="@color/main_color"/>
 
     <FrameLayout
         android:layout_width="match_parent"
