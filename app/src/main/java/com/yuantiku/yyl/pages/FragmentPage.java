@@ -7,19 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-
 import com.yuantiku.yyl.helper.L;
 import com.yuantiku.yyl.observe.MyObservable;
 import com.yuantiku.yyl.observe.MyObserver;
 import com.yuantiku.yyl.pages.interfaces.Page;
 import com.yuantiku.yyl.pages.interfaces.PageManager;
 
+import butterknife.ButterKnife;
+
 /**
  * @author wanghb
  * @date 15/4/25.
  */
-public class FragmentPage extends Fragment implements MyObserver, Page {
+public abstract class FragmentPage extends Fragment implements MyObserver, Page {
 
     protected MyObservable myObservable = new MyObservable();
 
@@ -42,7 +42,7 @@ public class FragmentPage extends Fragment implements MyObserver, Page {
 
     @Override
     public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                                   @Nullable Bundle savedInstanceState) {
         if (getLayoutId() == 0) {
             return super.onCreateView(inflater, container, savedInstanceState);
         } else {
@@ -54,9 +54,7 @@ public class FragmentPage extends Fragment implements MyObserver, Page {
         }
     }
 
-    protected int getLayoutId() {
-        return 0;
-    }
+    protected abstract int getLayoutId();
 
     protected View setupView(View view) {
         return view;

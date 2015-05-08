@@ -110,7 +110,7 @@ public class ContactsPage extends FragmentPage implements OnItemClickListener {
         refreshData();
     }
 
-    private void updateData(List<Account> accounts) {
+    public void updateData(List<Account> accounts) {
         progress.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
         adapter.updateData(accounts);
