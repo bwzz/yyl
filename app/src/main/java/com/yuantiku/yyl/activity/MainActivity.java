@@ -17,6 +17,7 @@ import com.yuantiku.yyl.helper.UpdateHelper;
 import com.yuantiku.yyl.pages.ContactsPage;
 import com.yuantiku.yyl.pages.FragmentPageManager;
 import com.yuantiku.yyl.pages.interfaces.PageManager;
+import com.yuantiku.yyl.util.KeyboardUtils;
 import com.yuantiku.yyl.util.PersistentCookieStore;
 
 import butterknife.InjectView;
@@ -80,7 +81,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (!pageManager.interceptBackPressed()) {
-            super.onBackPressed();
+            if(searchWrapper.getVisibility() == View.VISIBLE) {
+                stopSearch();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -127,8 +132,11 @@ public class MainActivity extends BaseActivity {
     private void setSearchable(boolean show) {
         if (show) {
             searchWrapper.setVisibility(View.VISIBLE);
+            KeyboardUtils.showSoftKeyBoard(this, searchText);
+            searchText.requestFocus();
         } else {
             searchWrapper.setVisibility(View.GONE);
+            KeyboardUtils.hideSoftKeyboard(this, searchText);
         }
     }
 }

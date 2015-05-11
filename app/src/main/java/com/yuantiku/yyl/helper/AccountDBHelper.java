@@ -49,20 +49,36 @@ public enum AccountDBHelper {
         accountDao.insertOrReplaceInTx(accounts);
     }
 
-    public List<Account> query(String text){
-        if(TextUtils.isEmpty(text)){
+    public List<Account> query(String text) {
+        if (TextUtils.isEmpty(text)) {
             return getAccounts();
         }
         StringBuilder stringBuilder = new StringBuilder(text);
         QueryBuilder queryBuilder = accountDao.queryBuilder();
-        if(Character.isLetter(text.charAt(0))){
+        if (isChinese(text.charAt(0))) {
             stringBuilder.insert(0, "%").append("%");
-            queryBuilder.where(Properties.Ldap.like(stringBuilder.toString()));
-        } else {
-            stringBuilder.append("%");
             queryBuilder.where(Properties.Name.like(stringBuilder.toString()));
+        } else {
+            for (int i = 0; i < text.length(); i++) {
+                stringBuilder.insert(i * 2, "%");
+            }
+            stringBuilder.append("%");
+            queryBuilder.where(Properties.Ldap.like(stringBuilder.toString()));
         }
         return queryBuilder.list();
+    }
+
+    private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+            return true;
+        }
+        return false;
     }
 
     public void clear() {

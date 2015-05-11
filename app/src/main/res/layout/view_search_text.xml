@@ -8,7 +8,9 @@
     android:id="@+id/search_wrapper">
 
     <ImageView
-        android:padding="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:id="@+id/back"
         android:src="@drawable/selector_bar_back"
         android:layout_width="wrap_content"
