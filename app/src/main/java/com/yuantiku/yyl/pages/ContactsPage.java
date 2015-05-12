@@ -76,7 +76,7 @@ public class ContactsPage extends FragmentPage implements OnItemClickListener {
         if (adapter == null || adapter.getItemCount() <= 0) {
             progress.setVisibility(View.VISIBLE);
         }
-        ZGYWikiHelper.helper.loadMembers(this::updateData, this::handleException);
+        ZGYWikiHelper.INSTANCE.loadMembers(this::updateData, this::handleException);
     }
 
     private void handleException(Throwable e) {
@@ -94,7 +94,7 @@ public class ContactsPage extends FragmentPage implements OnItemClickListener {
     }
 
     private void loadLocalAccounts() {
-        List<Account> accounts = AccountDBHelper.helper.getAccounts();
+        List<Account> accounts = AccountDBHelper.INSTANCE.getAccounts();
         updateData(accounts);
     }
 

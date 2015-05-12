@@ -19,7 +19,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * @date 15/5/7.
  */
 public enum UpdateHelper {
-    helper;
+    INSTANCE;
 
     private UpdateService service;
 

@@ -14,7 +14,7 @@ import com.yuantiku.dbdata.Account;
 /** 
  * DAO for table ACCOUNT.
 */
-public class AccountDao extends AbstractDao<Account, Long> {
+public class AccountDao extends AbstractDao<Account, String> {
 
     public static final String TABLENAME = "ACCOUNT";
 
@@ -23,15 +23,14 @@ public class AccountDao extends AbstractDao<Account, Long> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Ldap = new Property(2, String.class, "ldap", false, "LDAP");
-        public final static Property Email = new Property(3, String.class, "email", false, "EMAIL");
-        public final static Property Phone = new Property(4, String.class, "phone", false, "PHONE");
-        public final static Property Dept = new Property(5, String.class, "dept", false, "DEPT");
-        public final static Property GoogleAccount = new Property(6, String.class, "googleAccount", false, "GOOGLE_ACCOUNT");
-        public final static Property Birth = new Property(7, String.class, "birth", false, "BIRTH");
-        public final static Property Constellation = new Property(8, String.class, "constellation", false, "CONSTELLATION");
+        public final static Property Name = new Property(0, String.class, "name", false, "NAME");
+        public final static Property Ldap = new Property(1, String.class, "ldap", true, "LDAP");
+        public final static Property Email = new Property(2, String.class, "email", false, "EMAIL");
+        public final static Property Phone = new Property(3, String.class, "phone", false, "PHONE");
+        public final static Property Dept = new Property(4, String.class, "dept", false, "DEPT");
+        public final static Property GoogleAccount = new Property(5, String.class, "googleAccount", false, "GOOGLE_ACCOUNT");
+        public final static Property Birth = new Property(6, String.class, "birth", false, "BIRTH");
+        public final static Property Constellation = new Property(7, String.class, "constellation", false, "CONSTELLATION");
     };
 
 
@@ -47,15 +46,14 @@ public class AccountDao extends AbstractDao<Account, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'ACCOUNT' (" + //
-                "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'NAME' TEXT NOT NULL ," + // 1: name
-                "'LDAP' TEXT NOT NULL ," + // 2: ldap
-                "'EMAIL' TEXT," + // 3: email
-                "'PHONE' TEXT," + // 4: phone
-                "'DEPT' TEXT," + // 5: dept
-                "'GOOGLE_ACCOUNT' TEXT," + // 6: googleAccount
-                "'BIRTH' TEXT," + // 7: birth
-                "'CONSTELLATION' TEXT);"); // 8: constellation
+                "'NAME' TEXT NOT NULL ," + // 0: name
+                "'LDAP' TEXT PRIMARY KEY NOT NULL ," + // 1: ldap
+                "'EMAIL' TEXT," + // 2: email
+                "'PHONE' TEXT," + // 3: phone
+                "'DEPT' TEXT," + // 4: dept
+                "'GOOGLE_ACCOUNT' TEXT," + // 5: googleAccount
+                "'BIRTH' TEXT," + // 6: birth
+                "'CONSTELLATION' TEXT);"); // 7: constellation
     }
 
     /** Drops the underlying database table. */
@@ -68,64 +66,58 @@ public class AccountDao extends AbstractDao<Account, Long> {
     @Override
     protected void bindValues(SQLiteStatement stmt, Account entity) {
         stmt.clearBindings();
- 
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
-        stmt.bindString(2, entity.getName());
-        stmt.bindString(3, entity.getLdap());
+        stmt.bindString(1, entity.getName());
+        stmt.bindString(2, entity.getLdap());
  
         String email = entity.getEmail();
         if (email != null) {
-            stmt.bindString(4, email);
+            stmt.bindString(3, email);
         }
  
         String phone = entity.getPhone();
         if (phone != null) {
-            stmt.bindString(5, phone);
+            stmt.bindString(4, phone);
         }
  
         String dept = entity.getDept();
         if (dept != null) {
-            stmt.bindString(6, dept);
+            stmt.bindString(5, dept);
         }
  
         String googleAccount = entity.getGoogleAccount();
         if (googleAccount != null) {
-            stmt.bindString(7, googleAccount);
+            stmt.bindString(6, googleAccount);
         }
  
         String birth = entity.getBirth();
         if (birth != null) {
-            stmt.bindString(8, birth);
+            stmt.bindString(7, birth);
         }
  
         String constellation = entity.getConstellation();
         if (constellation != null) {
-            stmt.bindString(9, constellation);
+            stmt.bindString(8, constellation);
         }
     }
 
     /** @inheritdoc */
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.getString(offset + 1);
     }    
 
     /** @inheritdoc */
     @Override
     public Account readEntity(Cursor cursor, int offset) {
         Account entity = new Account( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // name
-            cursor.getString(offset + 2), // ldap
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // email
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // phone
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // dept
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // googleAccount
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // birth
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // constellation
+            cursor.getString(offset + 0), // name
+            cursor.getString(offset + 1), // ldap
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // email
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // phone
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // dept
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // googleAccount
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // birth
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // constellation
         );
         return entity;
     }
@@ -133,29 +125,27 @@ public class AccountDao extends AbstractDao<Account, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, Account entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.getString(offset + 1));
-        entity.setLdap(cursor.getString(offset + 2));
-        entity.setEmail(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPhone(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setDept(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setGoogleAccount(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setBirth(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setConstellation(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setName(cursor.getString(offset + 0));
+        entity.setLdap(cursor.getString(offset + 1));
+        entity.setEmail(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPhone(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setDept(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setGoogleAccount(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setBirth(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setConstellation(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
      }
     
     /** @inheritdoc */
     @Override
-    protected Long updateKeyAfterInsert(Account entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected String updateKeyAfterInsert(Account entity, long rowId) {
+        return entity.getLdap();
     }
     
     /** @inheritdoc */
     @Override
-    public Long getKey(Account entity) {
+    public String getKey(Account entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getLdap();
         } else {
             return null;
         }

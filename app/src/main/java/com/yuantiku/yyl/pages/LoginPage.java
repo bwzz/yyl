@@ -3,17 +3,17 @@ package com.yuantiku.yyl.pages;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.InjectView;
-import butterknife.OnClick;
-
 import com.github.johnpersano.supertoasts.SuperActivityToast;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.SuperToast.Duration;
 import com.yuantiku.yyl.R;
 import com.yuantiku.yyl.helper.L;
+import com.yuantiku.yyl.helper.UserHelper;
 import com.yuantiku.yyl.helper.ZGYWikiHelper;
 import com.yuantiku.yyl.util.OtherUtils;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -48,13 +48,14 @@ public class LoginPage extends FragmentPage {
                 SuperToast.Type.PROGRESS);
         superActivityToast.setText("登录中...");
         superActivityToast.show();
-        ZGYWikiHelper.helper.login(un, pw)
+        ZGYWikiHelper.INSTANCE.login(un, pw)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(success -> {
-                    superActivityToast.dismiss();
-                    pageManager.pop(LoginPage.this);
-                    myObservable.notifyObservers(success);
-                },
+                            superActivityToast.dismiss();
+                            UserHelper.INSTANCE.saveToken("Token " + success.get("token"));
+                            pageManager.pop(LoginPage.this);
+                            myObservable.notifyObservers(success);
+                        },
                         failure -> {
                             L.e(failure);
                             superActivityToast.dismiss();

@@ -20,7 +20,7 @@ import de.greenrobot.dao.query.QueryBuilder;
  * @date 15/4/29.
  */
 public enum AccountDBHelper {
-    helper;
+    INSTANCE;
 
     private SQLiteDatabase db;
     private DaoMaster daoMaster;

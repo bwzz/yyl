@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
         pageManager = new FragmentPageManager(getSupportFragmentManager(), R.id.container);
         contactsPage = new ContactsPage();
         pageManager.push(contactsPage, CONTACTS);
-        UpdateHelper.helper.checkUpdate(this);
+        UpdateHelper.INSTANCE.checkUpdate(this);
     }
 
     private void initToolbar() {
@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                AccountDBHelper.helper.clear();
+                AccountDBHelper.INSTANCE.clear();
                 PersistentCookieStore.getInstance(this).removeAll();
                 pageManager.resetWithStartPage(new ContactsPage(), CONTACTS);
                 break;
@@ -120,13 +120,13 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.isEmpty(text)) {
             return;
         }
-        Observable.just(AccountDBHelper.helper.query(text))
+        Observable.just(AccountDBHelper.INSTANCE.query(text))
                 .subscribe(contactsPage::updateData);
     }
 
     private void stopSearch() {
         setSearchable(false);
-        contactsPage.updateData(AccountDBHelper.helper.getAccounts());
+        contactsPage.updateData(AccountDBHelper.INSTANCE.getAccounts());
     }
 
     private void setSearchable(boolean show) {
@@ -135,6 +135,7 @@ public class MainActivity extends BaseActivity {
             KeyboardUtils.showSoftKeyBoard(this, searchText);
             searchText.requestFocus();
         } else {
+            searchText.setText(null);
             searchWrapper.setVisibility(View.GONE);
             KeyboardUtils.hideSoftKeyboard(this, searchText);
         }

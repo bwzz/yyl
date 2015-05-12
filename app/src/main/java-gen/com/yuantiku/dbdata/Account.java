@@ -6,7 +6,6 @@ package com.yuantiku.dbdata;
  */
 public class Account implements java.io.Serializable {
 
-    private Long id;
     /** Not-null value. */
     private String name;
     /** Not-null value. */
@@ -21,12 +20,11 @@ public class Account implements java.io.Serializable {
     public Account() {
     }
 
-    public Account(Long id) {
-        this.id = id;
+    public Account(String ldap) {
+        this.ldap = ldap;
     }
 
-    public Account(Long id, String name, String ldap, String email, String phone, String dept, String googleAccount, String birth, String constellation) {
-        this.id = id;
+    public Account(String name, String ldap, String email, String phone, String dept, String googleAccount, String birth, String constellation) {
         this.name = name;
         this.ldap = ldap;
         this.email = email;
@@ -35,14 +33,6 @@ public class Account implements java.io.Serializable {
         this.googleAccount = googleAccount;
         this.birth = birth;
         this.constellation = constellation;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     /** Not-null value. */

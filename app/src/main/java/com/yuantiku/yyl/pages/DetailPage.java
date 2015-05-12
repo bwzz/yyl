@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
+import com.yuantiku.yyl.helper.ZGYWikiHelper;
 
 import java.util.Random;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * @author wanghb
@@ -50,20 +52,29 @@ public class DetailPage extends FragmentPage {
     @Override
     protected View setupView(View view) {
         contact = (Account) getArguments().get(Account.class.getName());
-        name.setText(contact.getName());
-        phone.setText(contact.getPhone());
-        email.setText(contact.getEmail());
-        birthday.setText(contact.getBirth());
-        googleAccount.setText(contact.getGoogleAccount());
+        if (contact == null) {
+            return super.setupView(view);
+        }
+        ZGYWikiHelper.INSTANCE.getUserDetail(contact.getLdap())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(account -> contact = account)
+                .subscribe(code -> {
+                    name.setText(contact.getName());
+                    phone.setText(contact.getPhone());
+                    email.setText(contact.getEmail());
+                    birthday.setText(contact.getBirth());
+                    googleAccount.setText(contact.getGoogleAccount());
 
-        // TODO
-        constellationName.setText(contact.getConstellation());
-        ShapeDrawable shape = new ShapeDrawable(new OvalShape());
-        Random random = new Random();
-        shape.getPaint().setColor(Color.argb(220, random.nextInt(255), random.nextInt(255),
-                random.nextInt(255)));
-        constellationName.setBackgroundDrawable(shape);
-
+                    // TODO
+                    if (!TextUtils.isEmpty(contact.getConstellation())) {
+                        constellationName.setText(contact.getConstellation());
+                    }
+                    ShapeDrawable shape = new ShapeDrawable(new OvalShape());
+                    Random random = new Random();
+                    shape.getPaint().setColor(Color.argb(220, random.nextInt(255), random.nextInt(255),
+                            random.nextInt(255)));
+                    constellationName.setBackgroundDrawable(shape);
+                }, Throwable::printStackTrace);
         return super.setupView(view);
     }
 
