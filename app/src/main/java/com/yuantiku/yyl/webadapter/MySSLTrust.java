@@ -3,6 +3,7 @@ package com.yuantiku.yyl.webadapter;
 import android.content.Context;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.yuantiku.yyl.helper.SSLv3SocketFactory;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -54,7 +55,7 @@ public class MySSLTrust {
                 }
             };
             client.setHostnameVerifier(hostnameVerifier);
-            client.setSslSocketFactory(ctx.getSocketFactory());
+            client.setSslSocketFactory(new SSLv3SocketFactory(ctx.getSocketFactory()));
         } catch (final Exception e) {}
 
         return client;
