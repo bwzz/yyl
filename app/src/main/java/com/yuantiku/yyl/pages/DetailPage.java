@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.yuantiku.dbdata.Account;
 import com.yuantiku.yyl.R;
+import com.yuantiku.yyl.helper.ConstellationHelper;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.InjectView;
@@ -22,6 +25,7 @@ import butterknife.OnClick;
  * @date 15/4/29.
  */
 public class DetailPage extends FragmentPage {
+
     @InjectView(R.id.name)
     TextView name;
 
@@ -56,14 +60,12 @@ public class DetailPage extends FragmentPage {
         birthday.setText(contact.getBirth());
         googleAccount.setText(contact.getGoogleAccount());
 
-        // TODO
-        constellationName.setText(contact.getConstellation());
         ShapeDrawable shape = new ShapeDrawable(new OvalShape());
         Random random = new Random();
         shape.getPaint().setColor(Color.argb(220, random.nextInt(255), random.nextInt(255),
                 random.nextInt(255)));
         constellationName.setBackgroundDrawable(shape);
-
+        ConstellationHelper.setTextView(constellationName, contact.getConstellation());
         return super.setupView(view);
     }
 
@@ -99,4 +101,5 @@ public class DetailPage extends FragmentPage {
         data.putExtra(Intent.EXTRA_TEXT, "");
         startActivity(data);
     }
+
 }
